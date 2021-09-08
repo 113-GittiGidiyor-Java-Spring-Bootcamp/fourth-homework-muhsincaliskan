@@ -3,6 +3,9 @@ package com.patika.hw4.dto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.patika.hw4.entity.Course;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -12,7 +15,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentDTO {
     @ApiModelProperty(example = "11111111111")
     @NotNull(message = "ID is mandatory")

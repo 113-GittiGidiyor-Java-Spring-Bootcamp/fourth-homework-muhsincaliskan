@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface InstructorMapper {
-    Instructor maprFromInstructortoCourse(InstructorDTO dto);
+    Instructor maprFromInstructoDTOrtoInstructor(InstructorDTO dto);
     InstructorDTO maprFromInstructortoInstructorDTO(Instructor student);
 }
