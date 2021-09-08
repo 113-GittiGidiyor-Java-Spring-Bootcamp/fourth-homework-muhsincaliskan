@@ -22,23 +22,41 @@ public class CourseController {
 
     private CourseService courseService;
     @Autowired
+
     public CourseController(CourseService courseService){this.courseService=courseService;}
 
+    /**
+     * @param courseId
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Course> findCourse(Long courseId){
         return new ResponseEntity<>(courseService.findById(courseId).get(),HttpStatus.OK);
     }
+
+    /**
+     * @return
+     */
     @GetMapping("/all-courses")
     public ResponseEntity<List<Course>> findAllCourse(){
 
         return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
     }
+
+    /**
+     * @param courseDTO
+     * @return
+     */
     @PostMapping("/save-course")
     public ResponseEntity<Course> saveCourse(@RequestBody @Valid CourseDTO courseDTO){
         Optional<Course> course= courseService.save(courseDTO);
         return new ResponseEntity<>(course.get(),HttpStatus.OK);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete-course")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id){
         Optional<Course> course=courseService.findById(id);
@@ -46,11 +64,20 @@ public class CourseController {
         return new ResponseEntity<>(course.get(),HttpStatus.OK);
     }
 
+    /**
+     * @param course
+     * @return
+     */
     @PutMapping("/courses/")
     public Course updateCourse(@RequestBody Course course){
         return courseService.update(course);
 
     }
+
+    /**
+     * @param id
+     * @return
+     */
     @JsonProperty("instructor")
     @GetMapping("/courses/{id}")
     public ResponseEntity<Instructor> getInstructor(@RequestBody Long id){

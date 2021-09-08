@@ -1,6 +1,6 @@
 package com.patika.hw4.config;
 
-import dev.patika.patika0401.util.ClientRequestInfo;
+import com.patika.hw4.uitl.ClientRequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

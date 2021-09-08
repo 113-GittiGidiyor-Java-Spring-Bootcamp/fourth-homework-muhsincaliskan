@@ -9,6 +9,7 @@ import com.patika.hw4.exceptions.InstructorIsAlreadyExistException;
 import com.patika.hw4.exceptions.StudentAgeNotValidException;
 import com.patika.hw4.mappers.StudentMapper;
 import com.patika.hw4.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,16 +17,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentService implements BaseService<Student> {
-    private StudentRepository studentRepository;
-    private StudentMapper studentMapper;
+@RequiredArgsConstructor
 
+public class StudentService implements BaseService<Student> {
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
+
+    /**
+     * @return
+     */
     public List findAll() {
         return (List) studentRepository.findAll();
     }
     public Optional<Student> findById(Long id) {
         return  studentRepository.findById(id);
     }
+
+    /**
+     * @param object
+     * @return
+     */
     public Optional<Student> save(StudentDTO object) {
         if ((LocalDate.now().getYear()-object.getBirthDate().getYear())<18||(LocalDate.now().getYear()-object.getBirthDate().getYear())>40){
             throw new StudentAgeNotValidException("Student is already Exists");
@@ -33,6 +44,10 @@ public class StudentService implements BaseService<Student> {
         Student student=studentMapper.maprFromStudentDTOtoStudent(object);
         return Optional.of(studentRepository.save(student));
     }
+
+    /**
+     * @param id
+     */
     @Override
     public void deleteById(Long id) {
         studentRepository.deleteById(id);
