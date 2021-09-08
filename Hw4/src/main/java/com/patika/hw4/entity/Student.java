@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,5 +36,5 @@ public class Student{
     private String Gender;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Course> studentCourses = new HashSet<>();
+    private List<Course> studentCourses;
 }

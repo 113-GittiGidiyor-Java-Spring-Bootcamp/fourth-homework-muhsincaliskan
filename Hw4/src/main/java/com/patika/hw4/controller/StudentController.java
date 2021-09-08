@@ -17,7 +17,7 @@ public class StudentController {
     @Autowired
     public StudentController(StudentService studentService){this.studentService=studentService;}
     @GetMapping("/{id}")
-    public Student findStudent(@PathVariable int studentId){
+    public Student findStudent(@PathVariable Long studentId){
         return studentService.findById(studentId);
     }
     @GetMapping("/all-students")
@@ -30,12 +30,12 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete-student")
-    public void deleteStudent(@PathVariable int id){
+    public void deleteStudent(@PathVariable Long id){
         studentService.deleteById(id);
     }
     @PutMapping("/update-student")
     public void updateStudent(Student student,@PathVariable int id){
-        studentService.update(student, id);
+        studentService.update(student);
     }
 
 }

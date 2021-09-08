@@ -1,6 +1,7 @@
 package com.patika.hw4.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.patika.hw4.dto.CourseDTO;
 import com.patika.hw4.entity.Course;
 import com.patika.hw4.entity.Instructor;
 import com.patika.hw4.service.CourseService;
@@ -10,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -22,23 +25,25 @@ public class CourseController {
     public CourseController(CourseService courseService){this.courseService=courseService;}
 
     @GetMapping("/{id}")
-    public Course findCourse(Long courseId){
-        return courseService.findById(courseId);
+    public ResponseEntity<Course> findCourse(Long courseId){
+        return new ResponseEntity<>(courseService.findById(courseId).get(),HttpStatus.OK);
     }
     @GetMapping("/all-courses")
     public ResponseEntity<List<Course>> findAllCourse(){
 
-        return new ResponseEntity<>( courseService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
     }
     @PostMapping("/save-course")
-    public Course saveCourse(@RequestBody Course course){
-        return courseService.save(course);
+    public ResponseEntity<Course> saveCourse(@RequestBody @Valid CourseDTO courseDTO){
+        Optional<Course> course= courseService.save(courseDTO);
+        return new ResponseEntity<>(course.get(),HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-course")
-    public String deleteCourse(@PathVariable int id){
+    public ResponseEntity<Course> deleteCourse(@PathVariable Long id){
+        Optional<Course> course=courseService.findById(id);
         courseService.deleteById(id);
-        return "Deleted...";
+        return new ResponseEntity<>(course.get(),HttpStatus.OK);
     }
 
     @PutMapping("/courses/")
@@ -48,9 +53,9 @@ public class CourseController {
     }
     @JsonProperty("instructor")
     @GetMapping("/courses/{id}")
-    public Instructor getInstructor(@RequestBody int id){
+    public ResponseEntity<Instructor> getInstructor(@RequestBody Long id){
 
-        return courseService.findInstructorOfCourse(id);
+        return new ResponseEntity<>(courseService.findInstructorOfCourse(id),HttpStatus.OK);
 
     }
 }

@@ -1,7 +1,7 @@
 package com.patika.hw4.config;
 
-import dev.patika.patika0401.Patika0401Application;
-import dev.patika.patika0401.config.annotation.DeveloperInfo;
+import com.patika.hw4.Hw4Application;
+import com.patika.hw4.config.annotation.DeveloperInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -32,8 +32,8 @@ public class SpringFoxConfig {
 
     private ApiInfo apiInfo() {
         /** we use reflection api to access annotations at runtime **/
-        final Class<Patika0401Application> patika0401ApplicationClass = Patika0401Application.class;
-        Annotation[] annotations = patika0401ApplicationClass.getAnnotations();
+        final Class<Hw4Application> Hw4ApplicationClass = Hw4Application.class;
+        Annotation[] annotations = Hw4ApplicationClass.getAnnotations();
         DeveloperInfo developerInfo = null;
 
         for (Annotation annotation : annotations) {
@@ -48,7 +48,7 @@ public class SpringFoxConfig {
                 "1.0",
                 "Terms of service",
                 new Contact(developerInfo.createdBy(), developerInfo.url(), developerInfo.email()),
-                //new Contact("Koray Guney", "https://github.com/korayguney", "koray.guney@hotmail.com"),
+                //new Contact("Muhsin Çalışkan", "https://github.com/muhsincaliskan", "koray.guney@hotmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());

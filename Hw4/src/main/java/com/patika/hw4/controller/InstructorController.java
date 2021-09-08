@@ -1,13 +1,14 @@
 package com.patika.hw4.controller;
 
+import com.patika.hw4.dto.InstructorDTO;
 import com.patika.hw4.entity.Instructor;
 import com.patika.hw4.service.InstructorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/instructors")
@@ -17,7 +18,7 @@ public class InstructorController {
     @Autowired
     public InstructorController(InstructorService instructorService){this.instructorService=instructorService;}
     @GetMapping("/instructors/{id}")
-    public Instructor findInstructor(@PathVariable int instructorId){
+    public Optional<Instructor> findInstructor(@PathVariable Long instructorId){
         return instructorService.findById(instructorId);
     }
     @GetMapping("/all-instructors")
@@ -25,17 +26,17 @@ public class InstructorController {
         return instructorService.findAll();
     }
     @PostMapping("/save-instructor")
-    public void save(Instructor instructor){
+    public void save(InstructorDTO instructor){
         instructorService.save(instructor);
     }
 
     @DeleteMapping("/delete-instructor")
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable Long id){
         instructorService.deleteById(id);
     }
     @PutMapping("/update-instructors")
-    public void update(Instructor instructor,@PathVariable int id){
-        instructorService.update(instructor, id);
+    public void update(Instructor instructor){
+        instructorService.update(instructor);
     }
 
 }

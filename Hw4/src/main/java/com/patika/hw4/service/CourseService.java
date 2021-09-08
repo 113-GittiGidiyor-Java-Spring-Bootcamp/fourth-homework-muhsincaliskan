@@ -7,6 +7,7 @@ import com.patika.hw4.exceptions.CourseIsAlreadyExistException;
 import com.patika.hw4.mappers.CourseMapper;
 import com.patika.hw4.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,18 +16,21 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CourseService implements BaseService<Course> {
-    private final CourseRepository courseRepository;
-    private final CourseMapper courseMapper;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private CourseMapper courseMapper;
     @Override
-    public Optional <List<Course>> findAll() {
-        return courseRepository.findAll();
+    public List<Course> findAll() {
+        return (List<Course>) courseRepository.findAll();
     }
+
 
     @Transactional
     public Optional<Course> findById(Long id) {
-        return courseRepository.findById(id);
-    }
 
+        return  courseRepository.findById(id);
+    }
     @Transactional
     public Optional<Course> save(CourseDTO object) {
 
@@ -46,10 +50,9 @@ public class CourseService implements BaseService<Course> {
     public Course update(Course object) {
         return courseRepository.save(object);
     }
-    @Override
-    public Instructor findInstructorOfCourse(int id) {
+    public Instructor findInstructorOfCourse(Long id) {
 
-        return findById(id).getInstructor();
+        return courseRepository.findById(id).get().getInstructor();
 
     }
 

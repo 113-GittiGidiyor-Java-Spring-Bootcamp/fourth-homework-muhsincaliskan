@@ -18,13 +18,12 @@ import java.util.Optional;
 @Service
 public class StudentService implements BaseService<Student> {
     private StudentRepository studentRepository;
-    private final StudentMapper studentMapper;
+    private StudentMapper studentMapper;
 
     public List findAll() {
-        return studentRepository.findAll();
+        return (List) studentRepository.findAll();
     }
-    @Override
-    public Student findById(Long id) {
+    public Optional<Student> findById(Long id) {
         return  studentRepository.findById(id);
     }
     public Optional<Student> save(StudentDTO object) {
@@ -44,6 +43,6 @@ public class StudentService implements BaseService<Student> {
     }
 
     public List<Course> findCoursesOfStudent(Long id) {
-        return findById(id).getStudentCourses();
+        return studentRepository.findById(id).get().getStudentCourses();
     }
 }

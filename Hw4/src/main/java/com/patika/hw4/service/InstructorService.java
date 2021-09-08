@@ -5,7 +5,9 @@ import com.patika.hw4.entity.Course;
 import com.patika.hw4.entity.Instructor;
 import com.patika.hw4.exceptions.InstructorIsAlreadyExistException;
 import com.patika.hw4.mappers.InstructorMapper;
+import com.patika.hw4.repository.CourseRepository;
 import com.patika.hw4.repository.InstructorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,16 +15,17 @@ import java.util.Optional;
 
 @Service
 public class InstructorService implements BaseService<Instructor> {
+    @Autowired
     InstructorRepository instructorRepository;
+    @Autowired
     InstructorMapper instructorMapper;
 
     @Override
     public List<Instructor> findAll() {
-        return instructorRepository.findAll();
-
+        return (List<Instructor>) instructorRepository.findAll();
     }
-    @Override
-    public Instructor findById(Long id) {
+
+    public Optional<Instructor> findById(Long id) {
         return instructorRepository.findById(id);
 
     }
@@ -45,6 +48,6 @@ public class InstructorService implements BaseService<Instructor> {
     }
 
     public List<Course> findCoursesOfInstructor(Long id) {
-        return findById(id).getCourseList();
+        return  instructorRepository.findById(id).get().getCourseList();
     }
 }
