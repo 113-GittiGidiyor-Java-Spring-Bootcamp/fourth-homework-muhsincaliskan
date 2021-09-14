@@ -4,10 +4,14 @@ package com.patika.hw4.mappers;
 import com.patika.hw4.dto.InstructorDTO;
 
 import com.patika.hw4.entity.Instructor;
+import com.patika.hw4.service.InstructorService;
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface InstructorMapper {
-    Instructor maprFromInstructoDTOrtoInstructor(InstructorDTO dto);
-    InstructorDTO maprFromInstructortoInstructorDTO(Instructor student);
+    @Autowired
+    InstructorService instructorService=null;
+    Instructor maprFromInstructoDTOrtoInstructor(InstructorDTO instructorDTO);
+    InstructorDTO maprFromInstructortoInstructorDTO(Instructor instructor);
 }

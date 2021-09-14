@@ -42,20 +42,34 @@ public class InstructorController {
      * @param instructor
      */
     @PostMapping("/save-instructor")
-    public void save(InstructorDTO instructor){
-        instructorService.save(instructor);
+    public ResponseEntity<Instructor> save(InstructorDTO instructor){
+
+        Optional<Instructor> instructorOptional=instructorService.save(instructor);
+        if (instructorOptional.isPresent())
+            return new ResponseEntity<>( instructorOptional.get(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
      * @param id
      */
     @DeleteMapping("/delete-instructor")
-    public void delete(@PathVariable Long id){
-        instructorService.deleteById(id);
+    public ResponseEntity<Instructor> delete(@PathVariable Long id){
+        Optional<Instructor> instructorOptional=instructorService.findById(id);
+        if (instructorOptional.isPresent()) {
+            instructorService.deleteById(id);
+            return new ResponseEntity<>(instructorOptional.get(), HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
     @PutMapping("/update-instructors")
-    public void update(Instructor instructor){
-        instructorService.update(instructor);
+    public ResponseEntity<Instructor> update(Instructor instructor){
+        Optional<Instructor> instructorOptional=instructorService.findById(instructor.getId());
+        if (instructorOptional.isPresent())
+            return new ResponseEntity<>(instructorService.update(instructor),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 
 }

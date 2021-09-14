@@ -31,7 +31,10 @@ public class CourseController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Course> findCourse(Long courseId){
-        return new ResponseEntity<>(courseService.findById(courseId).get(),HttpStatus.OK);
+        Optional<Course> courseOptional=courseService.findById(courseId);
+        if (courseOptional.isPresent())
+            return new ResponseEntity<>(courseOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -60,8 +63,9 @@ public class CourseController {
     @DeleteMapping("/delete-course")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id){
         Optional<Course> course=courseService.findById(id);
+        if (!course.isPresent()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         courseService.deleteById(id);
-        return new ResponseEntity<>(course.get(),HttpStatus.OK);
+        return new ResponseEntity<>(course.get(),HttpStatus.ACCEPTED);
     }
 
     /**
@@ -69,9 +73,10 @@ public class CourseController {
      * @return
      */
     @PutMapping("/courses/")
-    public Course updateCourse(@RequestBody Course course){
-        return courseService.update(course);
-
+    public ResponseEntity <Course> updateCourse(@RequestBody Course course){
+        Optional<Course> course1=courseService.findById(course.getId());
+        if (!course1.isPresent())  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(courseService.update(course),HttpStatus.ACCEPTED);
     }
 
     /**

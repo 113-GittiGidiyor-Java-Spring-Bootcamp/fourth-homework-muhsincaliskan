@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CustomConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public com.patika.hw4.config.CustomInterceptor getInterceptor(){
-        return new com.patika.hw4.config.CustomInterceptor();
+    public CustomInterceptor getInterceptor(){
+        return new CustomInterceptor();
     }
 
     @Override

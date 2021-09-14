@@ -20,14 +20,4 @@ public class DataSourceConfiguration {
         dataSourceBuilder.password("password");
         return dataSourceBuilder.build();
     }
-
-
-    @Bean(name = "mysqlDatasource")
-    public DataSource mysqlDatasource(){
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/ooptest1?characterEncoding=UTF8");
-        dataSourceBuilder.username("root");
-        dataSourceBuilder.password("1234");
-        return dataSourceBuilder.build();
-    }
 }

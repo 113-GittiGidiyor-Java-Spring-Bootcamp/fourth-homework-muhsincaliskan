@@ -4,9 +4,11 @@ import com.patika.hw4.dto.CourseDTO;
 import com.patika.hw4.entity.Course;
 import com.patika.hw4.entity.Instructor;
 import com.patika.hw4.exceptions.CourseIsAlreadyExistException;
+import com.patika.hw4.exceptions.StudentNumberForOneCourseExceededException;
 import com.patika.hw4.mappers.CourseMapper;
 import com.patika.hw4.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,8 +17,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CourseService implements BaseService<Course> {
+    @Autowired
     private final CourseRepository courseRepository;
-    public final CourseMapper courseMapper;
+    @Autowired
+    private final CourseMapper courseMapper;
     @Override
     public List<Course> findAll() {
         return (List<Course>) courseRepository.findAll();
@@ -63,7 +67,15 @@ public class CourseService implements BaseService<Course> {
      */
     @Override
     public Course update(Course object) {
-        return courseRepository.save(object);
+        Optional<Course> courseOptional= courseRepository.findById(object.getId());
+
+        if (courseOptional.isPresent()) {
+            CourseDTO courseDTO= courseMapper.maprFromCoursetoCourseDTO(object);
+            if (courseDTO.getStudents().size()>20)
+                throw new StudentNumberForOneCourseExceededException("Max limit for class is 20");
+            return courseRepository.save(object);
+        }
+        throw new RuntimeException("Not found.");
     }
 
     /**

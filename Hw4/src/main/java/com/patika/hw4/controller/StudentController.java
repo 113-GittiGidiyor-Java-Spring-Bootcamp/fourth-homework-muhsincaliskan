@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/students")
@@ -32,28 +33,37 @@ public class StudentController {
      * @return
      */
     @GetMapping("/all-students")
-    public List<Student> findAllStudent(){
-        return studentService.findAll();
+    public ResponseEntity<List<Student>> findAllStudent(){
+        return new ResponseEntity<>(studentService.findAll(),HttpStatus.OK);
     }
 
     /**
      * @param student
      */
     @PostMapping("/save-student")
-    public void saveStudent(StudentDTO student){
-        studentService.save(student);
+    public ResponseEntity<Student> saveStudent(StudentDTO student){
+        Optional<Student> studentOptional=studentService.findById(student.getId());
+        if (!studentOptional.isPresent())
+            return new ResponseEntity<>(studentService.save(student).get(),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 
     /**
      * @param id
      */
     @DeleteMapping("/delete-student")
-    public void deleteStudent(@PathVariable Long id){
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
+        Optional<Student> studentOptional=studentService.findById(id);
+        if (!studentOptional.isPresent()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         studentService.deleteById(id);
+        return new ResponseEntity<>(studentOptional.get(),HttpStatus.ACCEPTED);
     }
     @PutMapping("/update-student")
-    public void updateStudent(Student student,@PathVariable int id){
-        studentService.update(student);
+    public ResponseEntity<Student> updateStudent(Student student,@PathVariable int id){
+        Optional<Student> studentOptional=studentService.findById(student.getId());
+        if (!studentOptional.isPresent())  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(studentService.update(student),HttpStatus.ACCEPTED);
     }
 
 }
